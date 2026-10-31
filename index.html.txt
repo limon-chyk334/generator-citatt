@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор Цитат Нового Времени</title>
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --card-bg: #1f2833;
+            --accent-color: #45f3ff;
+            --text-color: #c5c6c7;
+            --highlight: #66fcf1;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            font-size: 2.2rem;
+            text-shadow: 0 0 10px rgba(69, 243, 255, 0.5);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: #65ccb8;
+            font-size: 1.1rem;
+        }
+
+        .generator-container {
+            background: var(--card-bg);
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 40px 25px;
+            max-width: 650px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 25px rgba(69, 243, 255, 0.15);
+            box-sizing: border-box;
+        }
+
+        #random-quote {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 35px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.5;
+        }
+
+        button {
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+            padding: 15px 32px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            box-shadow: 0 0 20px var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Генератор Случайных Цитат</h1>
+        <div class="subtitle">Интерактивное собрание современной постиронии</div>
+    </header>
+
+    <div class="generator-container">
+        <div id="random-quote">Нажми на кнопку, чтобы получить цитату...</div>
+        <button onclick="generateQuote()">Узнать цитату</button>
+    </div>
+
+    <script>
+        const quotes = [
+            // Ваши исходные цитаты
+            "Сахар не соль - на ране боль",
+            "Пукнул в таз - потек унитаз",
+            "Ложка не вилка - в стене дырка",
+            "Лег поспать - улетела кровать",
+            "Начал бегать - обосрался в обед",
+            "Если тебе скучно - значит тебе не весело",
+            "Чтобы стоять - надо не лежать",
+            "Куда пойдешь - туда и придешь",
+            "Котлета не сосиска - пустая миска",
+            "Мышка не кошка - скибиди картошка",
+            "Компьютер не плойка - скибиди помойка",
+            "Решил подтянуться - забыл проснуться",
+            "Купил шаверму - улетел в сперму",
+            "Если ты спишь - значит ты не бодрствуешь",
+            "Лучше один раз увидеть - чем сто раз не увидеть",
+            "Друг это тот - кто не враг",
+            "Если у тебя есть деньги - значит они не кончились",
+            "Ночь не рассвет - пистолет не омлет.",
+            "Чай не компот - чебурек не бутерброд.",
+            "Гора не мышь - скибиди нафлудишь.",
+            "Любовь не картошка - скибиди окрошка.",
+            "Солнце не луна - колбаса не ветчина",
+            "Вода не сок - кирпич не носок",
+            "Огурец не помидор - потолок не забор",
+            "Кот не собака - скибиди драка",
+            "зима не лето - арбуз не котлета",
+            "слово не птичка - скибиди яичко",
+            "упал отжался - пёрнул обосрался",
+            "Время не кошка - скибиди картошка.",
+            "Осень не весна - водка не десна.",
+            "Шаг назад - трусы в салат.",
+            
+            // Новые добавленные цитаты
+            "Лайк не подписка - скибиди сосиска",
+            "Стрим не видос - скибиди понос",
+            "Рич не беброук - скибиди рок-н-роук",
+            "Твич не ютуб - скибиди куб",
+            "Школа не паб - скибиди шваб",
+            "Муха не слон - скибиди рингтон",
+            "Ручка не карандаш - гараж не блиндаж",
+            "Рыба не мясо - колёса от кваса",
+            "Дверь не стена - баранка от слона",
+            "Сапог не калоша - плохой не хороший",
+            "Решил подтянуться - забыл проснуться",
+            "Надел носки - порвался от тоски",
+            "Полез за ключами - застрял плечами",
+            "Открыл холодильник - сломал будильник",
+            "Вчера было вчера - а сегодня это сегодня",
+            "Зубы не ноги - скибиди дроги",
+            "Каша не суп - гигачад туп",
+            "Лето не зима - в голове кутерьма",
+            "Сало не мясо - чипсы из кваса",
+            "Борщ не уха - в ухе муха",
+            "День не ночь - уходи прочь",
+            "Пошел в магазин - купил керосин",
+            "Сел на пенек - потерял денек",
+            "Сел посрать - забыл снять",
+            "Снял штаны - наелся хны",
+            "Чихнул в трамвае - трусы улетают",
+            "Споткнулся у порога - сломалась нога",
+            "Окно не дверь - я сигма теперь",
+            "Телефон не планшет - интернета нет",
+            "Шкаф не комод - разинул рот",
+            "Кефир не молоко - лететь далеко",
+            "Сыр не творог - пустой пирог",
+            "Лопата не топор - завел мотор",
+            "Шапка не кепка - держись крепко",
+            "Лег поспать - улетела кровать",
+            "Купил кроссовки - застрял на Чертановской",
+            "Открыл газировку - облил кроссовку",
+            "Хотел свистнуть - челюсть обвисла",
+            "Чтобы идти - надо переставлять ноги",
+            "Если открыть окно - в комнате станет окно",
+            "Один в поле - один в поле",
+            "Завтра будет суббота - если сегодня пятница"
+        ];
+
+        function generateQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            document.getElementById('random-quote').innerText = quotes[randomIndex];
+        }
+    </script>
+</body>
+</html>
